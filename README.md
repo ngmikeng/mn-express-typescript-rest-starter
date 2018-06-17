@@ -6,10 +6,14 @@ Express Typescript Rest API Starter (WIP)
 - ES6 Version: https://github.com/ngmikeng/mn-express-rest-starter.
 
 ### Get started
-- Typescript.
-- Install packages npm.
+- Typescript >= 2.7.
+- Install packages npm
 ```shell
 $ npm install 
+```
+- Add file `.env`
+```shell
+$ cp .env.sample .env
 ```
 - Bulid and run
 ```shell

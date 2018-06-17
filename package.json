@@ -4,9 +4,10 @@
   "description": "Express and typescript rest api starter project",
   "main": "server.js",
   "scripts": {
-    "build": "npm run build-ts",
+    "build": "npm run build-ts && npm run tslint",
     "build-ts": "tsc",
-    "serve": "node dist/server.js"
+    "serve": "node dist/server.js",
+    "tslint": "tslint -c tslint.json -p tsconfig.json"
   },
   "keywords": [
     "nodejs",
@@ -17,14 +18,32 @@
   "author": "Minh Nguyen",
   "license": "MIT",
   "dependencies": {
+    "body-parser": "^1.18.3",
+    "compression": "^1.7.2",
+    "cookie-parser": "^1.4.3",
+    "cors": "^2.8.4",
     "dotenv": "^6.0.0",
     "express": "^4.16.3",
-    "joi": "^13.4.0"
+    "helmet": "^3.12.1",
+    "http-status": "^1.2.0",
+    "joi": "^13.4.0",
+    "method-override": "^2.3.10",
+    "morgan": "^1.9.0"
   },
   "devDependencies": {
+    "@types/body-parser": "^1.17.0",
+    "@types/compression": "0.0.36",
+    "@types/cookie-parser": "^1.4.1",
+    "@types/cors": "^2.8.4",
     "@types/dotenv": "^4.0.3",
     "@types/express": "^4.16.0",
+    "@types/helmet": "0.0.38",
+    "@types/http-status": "^0.2.30",
     "@types/joi": "^13.0.8",
-    "@types/node": "^10.3.3"
+    "@types/method-override": "0.0.31",
+    "@types/morgan": "^1.7.35",
+    "@types/node": "^10.3.3",
+    "tslint": "^5.10.0",
+    "typescript": "^2.9.2"
   }
 }

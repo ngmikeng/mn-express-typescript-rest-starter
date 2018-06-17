@@ -1,5 +1,5 @@
-import app from './config/app';
-import config from './config/config';
+import app from "./config/app";
+import config from "./config/config";
 
 // Server is listenning on port {config.port}
 app.listen(config.port, () => {

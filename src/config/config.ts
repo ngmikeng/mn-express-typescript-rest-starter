@@ -1,18 +1,18 @@
-import dotenv from 'dotenv';
-import Joi from 'joi';
+import dotenv from "dotenv";
+import Joi from "joi";
 
 dotenv.config();
 // env config schema
 const envConfigSchema = Joi.object({
   NODE_ENV: Joi.string()
-    .allow(['development', 'production', 'test'])
-    .default('development'),
+    .allow(["development", "production", "test"])
+    .default("development"),
   PORT: Joi.number()
     .default(5000),
   JWT_SECRET: Joi.string().required()
-    .description('JWT Secret required to sign'),
+    .description("JWT Secret required to sign"),
   IS_USE_MONGO: Joi.string().default(true),
-  MONGODB_URI: Joi.string().default('mongodb://localhost:27017/')
+  MONGODB_URI: Joi.string().default("mongodb://localhost:27017/")
 }).unknown()
 .required();
 
