@@ -9,8 +9,9 @@ import cors from "cors";
 import helmet from "helmet";
 
 import APIError, { APIErrorType } from "../helpers/errorHandlers/APIError";
-import { responseSuccess, responseError } from "../helpers/responseHandlers/index";
+import { responseError } from "../helpers/responseHandlers/index";
 import config from "./config";
+import routers from "../routes/index.route";
 
 const app = express();
 
@@ -33,6 +34,9 @@ app.use(helmet());
 
 // enable CORS - Cross Origin Resource Sharing
 app.use(cors());
+
+// mount all routes on the path "/api/v1"
+app.use("/api/v1", routers);
 
 // if error is not an instanceOf APIError, convert it.
 app.use((err: APIErrorType, req: Request, res: Response, next: NextFunction) => {

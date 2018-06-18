@@ -1,5 +1,5 @@
 
-export function responseSuccess(data: Array<any> = [], opts: object = {}) {
+export function responseSuccess(data: any = [], opts: object = {}) {
   return {
     data: data,
     success: 1
