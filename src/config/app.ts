@@ -12,6 +12,7 @@ import APIError, { APIErrorType } from "../helpers/errorHandlers/APIError";
 import { responseError } from "../helpers/responseHandlers/index";
 import config from "./config";
 import routers from "../routes/index.route";
+import { createConnection as createMongoConnection } from "./databases/mongodb";
 
 const app = express();
 
@@ -37,6 +38,12 @@ app.use(cors());
 
 // mount all routes on the path "/api/v1"
 app.use("/api/v1", routers);
+
+if (config.isUseMongo) {
+  createMongoConnection()
+    .then(() => console.log("Created connection to mongodb successful"))
+    .catch(err => console.error(err));
+}
 
 // if error is not an instanceOf APIError, convert it.
 app.use((err: APIErrorType, req: Request, res: Response, next: NextFunction) => {
