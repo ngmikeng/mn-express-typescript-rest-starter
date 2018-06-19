@@ -24,6 +24,7 @@
   "author": "Minh Nguyen <ngmikeng@gmail.com>",
   "license": "MIT",
   "dependencies": {
+    "bluebird": "^3.5.1",
     "body-parser": "^1.18.3",
     "compression": "^1.7.2",
     "cookie-parser": "^1.4.3",
@@ -36,9 +37,11 @@
     "joi": "^13.4.0",
     "jsonwebtoken": "^8.3.0",
     "method-override": "^2.3.10",
+    "mongoose": "^5.1.5",
     "morgan": "^1.9.0"
   },
   "devDependencies": {
+    "@types/bluebird": "^3.5.20",
     "@types/body-parser": "^1.17.0",
     "@types/compression": "0.0.36",
     "@types/cookie-parser": "^1.4.1",
@@ -51,6 +54,7 @@
     "@types/joi": "^13.0.8",
     "@types/jsonwebtoken": "^7.2.7",
     "@types/method-override": "0.0.31",
+    "@types/mongoose": "^5.0.16",
     "@types/morgan": "^1.7.35",
     "@types/node": "^10.3.3",
     "tslint": "^5.10.0",
