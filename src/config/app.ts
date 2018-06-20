@@ -11,6 +11,7 @@ import helmet from "helmet";
 import APIError, { APIErrorType } from "../helpers/errorHandlers/APIError";
 import { responseError } from "../helpers/responseHandlers/index";
 import config from "./config";
+import wintonLogger from "./winston";
 import routers from "../routes/index.route";
 import { createConnection as createMongoConnection } from "./databases/mongodb";
 
@@ -42,7 +43,7 @@ app.use("/api/v1", routers);
 if (config.isUseMongo) {
   createMongoConnection()
     .then(() => console.log("Created connection to mongodb successful"))
-    .catch(err => console.error(err));
+    .catch(err => wintonLogger.error("Can not connect to mongodb", { error: err }));
 }
 
 // if error is not an instanceOf APIError, convert it.

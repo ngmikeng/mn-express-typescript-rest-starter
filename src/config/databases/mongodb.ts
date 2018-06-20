@@ -6,7 +6,8 @@ import config from "../config";
 if (config.env === "development") {
   mongoose.set("debug", false);
 }
-
+// Use bluebird Promise for mongoose
+mongoose.Promise = Promise;
 const connectionsByDb: any = {};
 
 export function createConnection(options?: object) {

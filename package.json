@@ -38,7 +38,8 @@
     "jsonwebtoken": "^8.3.0",
     "method-override": "^2.3.10",
     "mongoose": "^5.1.5",
-    "morgan": "^1.9.0"
+    "morgan": "^1.9.0",
+    "winston": "^3.0.0"
   },
   "devDependencies": {
     "@types/bluebird": "^3.5.20",
@@ -57,6 +58,7 @@
     "@types/mongoose": "^5.0.16",
     "@types/morgan": "^1.7.35",
     "@types/node": "^10.3.3",
+    "@types/winston": "^2.3.9",
     "tslint": "^5.10.0",
     "typescript": "^2.9.2"
   }
