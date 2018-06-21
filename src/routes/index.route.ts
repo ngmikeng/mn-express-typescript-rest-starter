@@ -5,6 +5,15 @@ import userRoutes from "./user.route";
 const router = Router();
 
 /** GET /health-check - Check service health */
+/**
+ * @swagger
+ * /health-check:
+ *   get:
+ *     description: Check service health
+ *     responses:
+ *       200:
+ *         description: 'OK'
+ */
 router.get("/health-check", (req: Request, res: Response) => res.send("OK"));
 
 // mount auth routes at /auth

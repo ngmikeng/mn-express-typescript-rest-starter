@@ -58,7 +58,10 @@
     "@types/mongoose": "^5.0.16",
     "@types/morgan": "^1.7.35",
     "@types/node": "^10.3.3",
+    "@types/swagger-jsdoc": "0.0.2",
     "@types/winston": "^2.3.9",
+    "swagger-jsdoc": "^1.9.7",
+    "swagger-ui-express": "^3.0.10",
     "tslint": "^5.10.0",
     "typescript": "^2.9.2"
   }
