@@ -33,15 +33,13 @@ const router = Router();
  *        description: 'OK'
  *      401:
  *        description: 'Unauthorized'
- */   
+ */
 router.post("/login", login);
 
 /**
  * GET /api/v1/auth/random-number
  * - Protected route, needs token returned by the above as header. Authorization: Bearer {token}
  */
-/** GET /api/v1/auth/random-number
-- Protected route, needs token returned by the above as header. Authorization: Bearer {token} */
 /**
  * @swagger
  * /auth/randomNumber:
@@ -57,7 +55,7 @@ router.post("/login", login);
  *        description: 'OK'
  *      401:
  *        description: 'Unauthorized'
- */ 
+ */
 router.get("/random-number", expressJwt({ secret: config.jwtSecret }), randomNumber);
 
 export default router;

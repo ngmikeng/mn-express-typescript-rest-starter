@@ -37,17 +37,17 @@ app.use(helmet());
 // enable CORS - Cross Origin Resource Sharing
 app.use(cors());
 
-// config swagger api
-require("./swagger")(app);
-
-// mount all routes on the path "/api/v1"
-app.use("/api/v1", routers);
-
 if (config.isUseMongo) {
   createMongoConnection()
     .then(() => console.log("Created connection to mongodb successful"))
     .catch((err: Error) => wintonLogger.error("Can not connect to mongodb", { error: err }));
 }
+
+// config swagger api
+require("./swagger")(app);
+
+// mount all routes on the path "/api/v1"
+app.use("/api/v1", routers);
 
 // if error is not an instanceOf APIError, convert it.
 app.use((err: APIErrorType, req: Request, res: Response, next: NextFunction) => {
