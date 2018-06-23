@@ -8,6 +8,9 @@ if (!connection) {
   throw new Error("No such a connection to mongodb");
 }
 
+/**
+ * User types
+ */
 export interface IUserDocument extends Document {
   username: string;
   email: string;
@@ -20,15 +23,6 @@ export interface IUserModel extends Model<IUser> {
   getById(id: string): Promise<IUserDocument>;
   getList(options: object): Promise<Array<IUserDocument>>;
 }
-
-/**
- * User Type
- */
-// export type UserModel = mongoose.Document & {
-//   username: string,
-//   email: string,
-//   fullName: string
-// };
 
 /**
  * User Schema
@@ -101,5 +95,5 @@ UserSchema.statics = {
  * @typedef User
  */
 const User: IUserModel = connection.model<IUser, IUserModel>("User", UserSchema);
-// const User = connection.model("User", UserSchema);
+
 export default User;

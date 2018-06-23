@@ -1,4 +1,4 @@
-Express Typescript Rest API Starter (WIP)
+Express Typescript Rest API Starter
 ===
 - Simple project starter point for Rest API using Nodejs & Expressjs.
 - Starter point for learning and practice Typescript, Nodejs & Expressjs.
@@ -22,9 +22,9 @@ $ npm run serve
 ```
 
 ### TODO
-- WIP.
-- ORM: mongoosejs.
-- API docs: swagger...
+- Unit test.
+- ORM: Sequelize.
+- Write definitely type for some libraries.
 ...
 
 ### License

@@ -11,7 +11,7 @@ const envConfigSchema = Joi.object({
     .default(5000),
   JWT_SECRET: Joi.string().required()
     .description("JWT Secret required to sign"),
-  IS_USE_MONGO: Joi.string().default(true),
+  IS_USE_MONGO: Joi.boolean().default(true),
   MONGODB_URI: Joi.string().default("mongodb://localhost:27017/")
 }).unknown()
 .required();
