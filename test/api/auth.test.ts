@@ -4,7 +4,8 @@ import { default as supertest } from "supertest";
 import jwt from "jsonwebtoken";
 import config from "../../src/config/config";
 
-const request = supertest("http://localhost:5858");
+const BASE_ROUTE = "/api/v1/auth";
+const request = supertest(config.rootUrl);
 
 describe("## Auth API", () => {
   const validUserCredentials = {
@@ -15,11 +16,12 @@ describe("## Auth API", () => {
     username: "typescript",
     password: "wrongPass"
   };
-  
+  let authToken: string;
+
   describe("# POST /api/v1/login", () => {
     it("should return Authentication error", (done) => {
       request
-        .post("/api/v1/auth/login")
+        .post(`${BASE_ROUTE}/login`)
         .send(invalidUserCredentials)
         .expect(httpStatus.UNAUTHORIZED)
         .then((res) => {
@@ -31,7 +33,7 @@ describe("## Auth API", () => {
 
     it("should return Bad Request error", (done) => {
       request
-        .post("/api/v1/auth/login")
+        .post(`${BASE_ROUTE}/login`)
         .send({ username: "", password: "" })
         .expect(httpStatus.BAD_REQUEST)
         .then((res) => {
@@ -43,7 +45,7 @@ describe("## Auth API", () => {
 
     it("should return valid JWT token", (done) => {
       request
-        .post("/api/v1/auth/login")
+        .post(`${BASE_ROUTE}/login`)
         .send(validUserCredentials)
         .expect(httpStatus.OK)
         .then((res) => {
@@ -51,8 +53,46 @@ describe("## Auth API", () => {
           jwt.verify(res.body.data.token, config.jwtSecret, (err: Error, decoded: { username: string }) => {
             expect(err).is.null;
             expect(decoded.username).to.equal(validUserCredentials.username);
+            authToken = res.body.data.token;
             done();
           });
+        })
+        .catch(done);
+    });
+  });
+
+  describe("# GET /api/v1/randomNumber", () => {
+    it("should return Unauthorized error when get random number because of no set Authentication in header", (done) => {
+      request
+        .get(`${BASE_ROUTE}/randomNumber`)
+        .expect(httpStatus.UNAUTHORIZED)
+        .then((res) => {
+          expect(res.body.message).to.equal("Unauthorized error");
+          done();
+        })
+        .catch(done);
+    });
+
+    it("should return Unauthorized error when get random number because of set invalid auth token", (done) => {
+      request
+        .get(`${BASE_ROUTE}/randomNumber`)
+        .set("Authorization", "Bearer invalid-token")
+        .expect(httpStatus.UNAUTHORIZED)
+        .then((res) => {
+          expect(res.body.message).to.equal("Unauthorized error");
+          done();
+        })
+        .catch(done);
+    });
+
+    it("should return a number", (done) => {
+      request
+        .get(`${BASE_ROUTE}/randomNumber`)
+        .set("Authorization", `Bearer ${authToken}`)
+        .expect(httpStatus.OK)
+        .then((res) => {
+          expect(res.body.data.num).to.be.a("number");
+          done();
         })
         .catch(done);
     });

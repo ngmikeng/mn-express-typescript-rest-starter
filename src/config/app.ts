@@ -7,8 +7,8 @@ import methodOverride from "method-override";
 import httpStatus from "http-status";
 import cors from "cors";
 import helmet from "helmet";
-
-import APIError, { APIErrorType } from "../helpers/errorHandlers/APIError";
+import { UnauthorizedError } from "express-jwt";
+import APIError, { IAPIError } from "../helpers/errorHandlers/APIError";
 import { responseError } from "../helpers/responseHandlers/index";
 import config from "./config";
 import wintonLogger from "./winston";
@@ -50,8 +50,12 @@ require("./swagger")(app);
 app.use("/api/v1", routers);
 
 // if error is not an instanceOf APIError, convert it.
-app.use((err: APIErrorType, req: Request, res: Response, next: NextFunction) => {
-  if (!(err instanceof APIError)) {
+app.use((err: IAPIError, req: Request, res: Response, next: NextFunction) => {
+  // handle UnauthorizedError from express-jwt middleware
+  if (err instanceof UnauthorizedError) {
+    const error = new APIError("Unauthorized error", err.status, err.isPublic);
+    return next(error);
+  } else if (!(err instanceof APIError)) {
     const apiError = new APIError(err.message, err.status, err.isPublic);
     return next(apiError);
   }
@@ -65,7 +69,7 @@ app.use((req: Request, res: Response, next: NextFunction) => {
 });
 
 // error handler, send stacktrace only during development
-app.use((err: APIErrorType, req: Request, res: Response, next: NextFunction) => // eslint-disable-line no-unused-vars
+app.use((err: IAPIError, req: Request, res: Response, next: NextFunction) => // eslint-disable-line no-unused-vars
   res.status(err.status).json(responseError(err))
 );
 

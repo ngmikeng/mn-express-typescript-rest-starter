@@ -58,6 +58,6 @@ router.post("/login", validate(authValidation.login), login);
  *      401:
  *        description: 'Unauthorized'
  */
-router.get("/random-number", expressJwt({ secret: config.jwtSecret }), randomNumber);
+router.get("/randomNumber", expressJwt({ secret: config.jwtSecret }), randomNumber);
 
 export default router;
