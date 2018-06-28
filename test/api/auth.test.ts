@@ -1,4 +1,4 @@
-import { default as chai, expect } from "chai";
+import { expect } from "chai";
 import httpStatus from "http-status";
 import { default as supertest } from "supertest";
 import jwt from "jsonwebtoken";

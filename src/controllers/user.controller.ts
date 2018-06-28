@@ -22,7 +22,7 @@ export function load(req: Request, res: Response, next: NextFunction, id: string
  * @returns {User}
  */
 export function get(req: Request, res: Response) {
-  return res.json(req.user);
+  return res.json(responseSuccess(req.user));
 }
 
 /**
@@ -41,12 +41,13 @@ export function list(req: Request, res: Response, next: NextFunction) {
 /**
  * Create new user
  * @property {string} req.body.username - The username of user.
- * @property {string} req.body.mobileNumber - The mobileNumber of user.
+ * @property {string} req.body.fullName - The fullName of user.
  * @returns {User}
  */
 export function create(req: Request, res: Response, next: NextFunction) {
   const user = new User({
     username: req.body.username,
+    email: req.body.email,
     fullName: req.body.fullName
   });
 
@@ -57,6 +58,13 @@ export function create(req: Request, res: Response, next: NextFunction) {
     .catch((e: Error) => next(e));
 }
 
+/**
+ * Create new user on a specified database.
+ * @property {string} req.body.username - The username of user.
+ * @property {string} req.body.fullName - The fullName of user.
+ * @property {string} req.query.db -  The name of a specified database
+ * @returns {User}
+ */
 export function createByDb(req: Request, res: Response, next: NextFunction) {
   const dbName = req.query.db;
   if (!dbName) {
@@ -67,6 +75,7 @@ export function createByDb(req: Request, res: Response, next: NextFunction) {
     const UserByDb = connection.model("User", User.schema);
     const user = new UserByDb({
       username: req.body.username,
+      email: req.body.email,
       fullName: req.body.fullName
     });
 

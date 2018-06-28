@@ -69,8 +69,11 @@ app.use((req: Request, res: Response, next: NextFunction) => {
 });
 
 // error handler, send stacktrace only during development
-app.use((err: IAPIError, req: Request, res: Response, next: NextFunction) => // eslint-disable-line no-unused-vars
-  res.status(err.status).json(responseError(err))
-);
+app.use((err: IAPIError, req: Request, res: Response, next: NextFunction) => {
+  if (config.env === "development") {
+    wintonLogger.error(err.name, err);
+  }
+  return res.status(err.status).json(responseError(err));
+});
 
 export default app;
