@@ -1,8 +1,8 @@
 import { Router } from "express";
-import expressJwt from "express-jwt";
-import config from "../config/config";
+import Joi from "joi";
 import * as userCtrl from "../controllers/user.controller";
 import userValidation from "../validation/user.validation";
+import APIError from "../helpers/errorHandlers/APIError";
 const validate = require("express-validation");
 
 const router = Router();
@@ -38,11 +38,9 @@ const router = Router();
  *          properties:
  *            username:
  *              type: string
+ *            email:
+ *              type: string
  *            fullName:
- *              type: string
- *            createdAt:
- *              type: string
- *            updatedAt:
  *              type: string
  *    responses:
  *      200:
@@ -51,7 +49,6 @@ const router = Router();
  *        description: 'Unauthorized'
  */
 router.route("/")
-  .all(expressJwt({ secret: config.jwtSecret }))
   /** GET /api/v1/users - Get list of users */
   .get(userCtrl.list)
   /** POST /api/users - Create new user */
@@ -76,11 +73,9 @@ router.route("/")
  *          properties:
  *            username:
  *              type: string
+ *            email:
+ *              type: string
  *            fullName:
- *              type: string
- *            createdAt:
- *              type: string
- *            updatedAt:
  *              type: string
  *      - in: query
  *        name: db
@@ -121,6 +116,12 @@ router.route("/:userId")
   .get(validate(userValidation.getById), userCtrl.get);
 
 /** Load user when API with userId route parameter is hit */
-router.param("userId", userCtrl.load);
+router.param("userId", (req, res, next, id) => {
+  const result = Joi.validate(id, userValidation.getById.params.userId);
+  if (result.error) {
+    return next(result.error);
+  }
+  return userCtrl.load(req, res, next, id);
+});
 
 export default router;

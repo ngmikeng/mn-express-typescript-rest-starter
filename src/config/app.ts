@@ -14,6 +14,7 @@ import config from "./config";
 import wintonLogger from "./winston";
 import routers from "../routes/index.route";
 import { createConnection as createMongoConnection } from "./databases/mongodb";
+import { ValidationError } from "mongoose";
 
 const app = express();
 
@@ -55,6 +56,9 @@ app.use((err: IAPIError, req: Request, res: Response, next: NextFunction) => {
   if (err instanceof UnauthorizedError) {
     const error = new APIError("Unauthorized error", err.status, err.isPublic);
     return next(error);
+  } else if (err && err.name === "ValidationError") { // handle validation error from Joi.validate
+    const validationError = new APIError("validation error", 400, err.isPublic);
+    return next(validationError);
   } else if (!(err instanceof APIError)) {
     const apiError = new APIError(err.message, err.status, err.isPublic);
     return next(apiError);

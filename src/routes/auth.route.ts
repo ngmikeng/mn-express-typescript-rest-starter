@@ -30,6 +30,9 @@ const router = Router();
  *              type: string
  *            password:
  *              type: string
+ *          example:
+ *            username: "typescript"
+ *            password: "typescript"
  *    responses:
  *      200:
  *        description: 'OK'

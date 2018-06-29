@@ -1,9 +1,9 @@
-import { default as mongoose, Model, Document } from "mongoose";
+import { default as mongoose, Model, Document, Connection } from "mongoose";
 import { Promise } from "bluebird";
 import httpStatus from "http-status";
 import APIError from "../helpers/errorHandlers/APIError";
 
-const connection = mongoose.connection;
+const connection: Connection = mongoose.connection;
 if (!connection) {
   throw new Error("No such a connection to mongodb");
 }

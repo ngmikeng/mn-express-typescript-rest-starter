@@ -9,7 +9,9 @@ const userBody = {
 export default {
   getById: {
     params: {
-      userId: Joi.string().required()
+      userId: Joi.string().required().disallow([
+        "null", "undefined"
+      ])
     }
   },
   createUser: {

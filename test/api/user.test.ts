@@ -65,7 +65,7 @@ describe("## User API", () => {
         .catch(done);
     });
 
-    it("should return Validation error", (done) => {
+    it("should return validation error", (done) => {
       request
         .post(`${BASE_ROUTE}/`)
         .set("Authorization", `Bearer ${authToken}`)
@@ -97,10 +97,22 @@ describe("## User API", () => {
   describe("GET /api/users/:userId - Get an user", () => {
     it("should return Unauthorized error", (done) => {
       request
-        .get(`${BASE_ROUTE}/`)
+        .get(`${BASE_ROUTE}/${userTest._id}`)
         .expect(httpStatus.UNAUTHORIZED)
         .then((res) => {
           expect(res.body.message).equal("Unauthorized error");
+          done();
+        })
+        .catch(done);
+    });
+
+    it("should return validation error", (done) => {
+      request
+        .get(`${BASE_ROUTE}/undefined`)
+        .set("Authorization", `Bearer ${authToken}`)
+        .expect(httpStatus.BAD_REQUEST)
+        .then((res) => {
+          expect(res.body.message).equal("validation error");
           done();
         })
         .catch(done);
