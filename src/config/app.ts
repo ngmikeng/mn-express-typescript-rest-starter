@@ -11,7 +11,7 @@ import { UnauthorizedError } from "express-jwt";
 import APIError, { IAPIError } from "../helpers/errorHandlers/APIError";
 import { responseError } from "../helpers/responseHandlers/index";
 import config from "./config";
-import wintonLogger from "./winston";
+import winstonLogger from "./winston";
 import routers from "../routes/index.route";
 import { createConnection as createMongoConnection } from "./databases/mongodb";
 import { ValidationError } from "mongoose";
@@ -41,7 +41,7 @@ app.use(cors());
 if (config.isUseMongo) {
   createMongoConnection()
     .then(() => console.log("Created connection to mongodb successful"))
-    .catch((err: Error) => wintonLogger.error("Can not connect to mongodb", { error: err }));
+    .catch((err: Error) => winstonLogger.error("Can not connect to mongodb", { error: err }));
 }
 
 // config swagger api
@@ -75,7 +75,7 @@ app.use((req: Request, res: Response, next: NextFunction) => {
 // error handler, send stacktrace only during development
 app.use((err: IAPIError, req: Request, res: Response, next: NextFunction) => {
   if (config.env === "development") {
-    wintonLogger.error(err.name, err);
+    winstonLogger.error(err.name, err);
   }
   return res.status(err.status).json(responseError(err));
 });

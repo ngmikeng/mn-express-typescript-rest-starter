@@ -2,7 +2,6 @@ import { Router } from "express";
 import Joi from "joi";
 import * as userCtrl from "../controllers/user.controller";
 import userValidation from "../validation/user.validation";
-import APIError from "../helpers/errorHandlers/APIError";
 const validate = require("express-validation");
 
 const router = Router();
@@ -56,6 +55,31 @@ router.route("/")
 
 /**
  * @swagger
+ * /users/{userId}:
+ *  get:
+ *    tags: [user]
+ *    summary: Get an user by user's id
+ *    security:
+ *      - ApiKeyAuth: []
+ *    consumes:
+ *      - application/json
+ *    parameters:
+ *      - in: path
+ *        name: userId
+ *        type: string
+ *        description: User's id.
+ *    responses:
+ *      200:
+ *        description: 'OK'
+ *      401:
+ *        description: 'Unauthorized'
+ */
+router.route("/:userId")
+  /** GET /api/v1/users/:userId - Get user */
+  .get(validate(userValidation.getById), userCtrl.get);
+
+/**
+ * @swagger
  * /users/db:
  *  post:
  *    tags: ["user"]
@@ -89,31 +113,6 @@ router.route("/")
 router.route("/db")
   /** POST /api/users/db - Create new user and save in a database has name equal req.query.db */
   .post(validate(userValidation.createUserByDb), userCtrl.createByDb);
-
-/**
- * @swagger
- * /users/{userId}:
- *  get:
- *    tags: [user]
- *    summary: Get an user by user's id
- *    security:
- *      - ApiKeyAuth: []
- *    consumes:
- *      - application/json
- *    parameters:
- *      - in: path
- *        name: userId
- *        type: string
- *        description: User's id.
- *    responses:
- *      200:
- *        description: 'OK'
- *      401:
- *        description: 'Unauthorized'
- */
-router.route("/:userId")
-  /** GET /api/v1/users/:userId - Get user */
-  .get(validate(userValidation.getById), userCtrl.get);
 
 /** Load user when API with userId route parameter is hit */
 router.param("userId", (req, res, next, id) => {

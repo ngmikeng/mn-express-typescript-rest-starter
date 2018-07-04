@@ -18,7 +18,7 @@ describe("## Auth API", () => {
   };
   let authToken: string;
 
-  describe("# POST /api/v1/login", () => {
+  describe(`# POST ${BASE_ROUTE}/login`, () => {
     it("should return Authentication error", (done) => {
       request
         .post(`${BASE_ROUTE}/login`)
@@ -61,7 +61,7 @@ describe("## Auth API", () => {
     });
   });
 
-  describe("# GET /api/v1/randomNumber", () => {
+  describe(`# GET ${BASE_ROUTE}/randomNumber`, () => {
     it("should return Unauthorized error when get random number because of no set Authentication in header", (done) => {
       request
         .get(`${BASE_ROUTE}/randomNumber`)

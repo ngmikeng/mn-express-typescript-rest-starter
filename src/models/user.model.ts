@@ -30,11 +30,13 @@ export interface IUserModel extends Model<IUser> {
 const UserSchema = new mongoose.Schema({
   username: {
     type: String,
-    required: true
+    required: true,
+    unique: true
   },
   email: {
     type: String,
-    required: true
+    required: true,
+    unique: true
   },
   fullName: {
     type: String,
@@ -48,6 +50,8 @@ const UserSchema = new mongoose.Schema({
  * - validations
  * - virtuals
  */
+// Example create a compound index
+// UserSchema.index({ username: 1, email: 1 }, { unique: true }) ;
 
 /**
  * Methods

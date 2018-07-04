@@ -27,8 +27,9 @@ before("Get auth token", (done) => {
 
 describe("## User API", () => {
   let userTest: User;
+  const userReqBody = { username: "test", email: "testuser@gmail.com", fullName: "Test User" };
 
-  describe("GET /api/v1/users - Get list of users", () => {
+  describe(`GET ${BASE_ROUTE} - Get list of users`, () => {
     it("should return Unauthorized error", (done) => {
       request
         .get(`${BASE_ROUTE}/`)
@@ -53,7 +54,7 @@ describe("## User API", () => {
     });
   });
 
-  describe("POST /api/users - Create new user", () => {
+  describe(`POST ${BASE_ROUTE} - Create new user`, () => {
     it("should return Unauthorized error", (done) => {
       request
         .post(`${BASE_ROUTE}/`)
@@ -65,7 +66,7 @@ describe("## User API", () => {
         .catch(done);
     });
 
-    it("should return validation error", (done) => {
+    it("should return validation error because the request body is invalid", (done) => {
       request
         .post(`${BASE_ROUTE}/`)
         .set("Authorization", `Bearer ${authToken}`)
@@ -82,7 +83,7 @@ describe("## User API", () => {
       request
         .post(`${BASE_ROUTE}/`)
         .set("Authorization", `Bearer ${authToken}`)
-        .send({ username: "test", email: "testuser@gmail.com", fullName: "Test User" })
+        .send(userReqBody)
         .expect(httpStatus.OK)
         .then((res) => {
           expect(res.body.data).to.be.an("object");
@@ -94,7 +95,7 @@ describe("## User API", () => {
     });
   });
 
-  describe("GET /api/users/:userId - Get an user", () => {
+  describe(`GET ${BASE_ROUTE}/:userId - Get an user`, () => {
     it("should return Unauthorized error", (done) => {
       request
         .get(`${BASE_ROUTE}/${userTest._id}`)
@@ -106,7 +107,7 @@ describe("## User API", () => {
         .catch(done);
     });
 
-    it("should return validation error", (done) => {
+    it("should return validation error because the param 'userId' is 'undefined'", (done) => {
       request
         .get(`${BASE_ROUTE}/undefined`)
         .set("Authorization", `Bearer ${authToken}`)
@@ -126,6 +127,63 @@ describe("## User API", () => {
         .then((res) => {
           expect(res.body.data).to.be.an("object");
           expect(res.body.data._id).to.be.a("string");
+          done();
+        })
+        .catch(done);
+    });
+  });
+
+  describe(`POST ${BASE_ROUTE}/db - Create new user in a specified database name`, () => {
+    it("should return Unauthorized error", (done) => {
+      request
+        .post(`${BASE_ROUTE}/db`)
+        .expect(httpStatus.UNAUTHORIZED)
+        .then((res) => {
+          expect(res.body.message).equal("Unauthorized error");
+          done();
+        })
+        .catch(done);
+    });
+
+    it("should return validation error because the request query 'db' is empty", (done) => {
+      request
+        .post(`${BASE_ROUTE}/db`)
+        .query({ db: "" })
+        .set("Authorization", `Bearer ${authToken}`)
+        .send({ fullName: "NoUserName" })
+        .expect(httpStatus.BAD_REQUEST)
+        .then((res) => {
+          expect(res.body.message).equal("validation error");
+          done();
+        })
+        .catch(done);
+    });
+
+    it("should return validation error because the request body is invalid", (done) => {
+      request
+        .post(`${BASE_ROUTE}/db`)
+        .query({ db: "mn-express-rest-stater-specified" })
+        .set("Authorization", `Bearer ${authToken}`)
+        .send({ fullName: "NoUserName" })
+        .expect(httpStatus.BAD_REQUEST)
+        .then((res) => {
+          expect(res.body.message).equal("validation error");
+          done();
+        })
+        .catch(done);
+    });
+
+    it("should create user successful and result is an object", (done) => {
+      request
+        .post(`${BASE_ROUTE}/db`)
+        .query({ db: "mn-express-rest-stater-specified" })
+        .set("Authorization", `Bearer ${authToken}`)
+        .send(userReqBody)
+        .expect(httpStatus.OK)
+        .then((res) => {
+          expect(res.body.data).to.be.an("object");
+          expect(res.body.data._id).to.be.a("string");
+          userTest = res.body.data;
           done();
         })
         .catch(done);
