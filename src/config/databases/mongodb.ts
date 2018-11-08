@@ -2,6 +2,7 @@ import mongoose from "mongoose";
 import { Promise } from "bluebird";
 import util from "util";
 import config from "../config";
+import winstonLogger from "../winston";
 
 if (config.env === "development") {
   mongoose.set("debug", false);
@@ -22,13 +23,13 @@ export function createConnection(options?: object) {
         resolve(mongoose.connection);
       });
       mongoose.connection.on("disconnected", function() {
-        console.log("MongoDB disconnected");
+        winstonLogger.info("MongoDB disconnected");
       });
       mongoose.connection.on("reconnected", function() {
-        console.log("MongoDB reconnected!");
+        winstonLogger.info("MongoDB reconnected!");
       });
       mongoose.connection.on("reconnecting", function() {
-        console.log("Reconnecting...!");
+        winstonLogger.info("Reconnecting...!");
       });
     } catch (err) {
       reject(util.inspect(err));
