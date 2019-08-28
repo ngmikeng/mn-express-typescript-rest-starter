@@ -14,7 +14,6 @@ import config from "./config";
 import winstonLogger from "./winston";
 import routers from "../routes/index.route";
 import { createConnection as createMongoConnection } from "./databases/mongodb";
-import { ValidationError } from "mongoose";
 
 const app = express();
 
@@ -68,14 +67,14 @@ app.use((err: IAPIError, req: Request, res: Response, next: NextFunction) => {
 
 // catch 404 and forward to error handler
 app.use((req: Request, res: Response, next: NextFunction) => {
-  const err = new APIError("API not found", httpStatus.NOT_FOUND);
+  const err = new APIError("API endpoint not found", httpStatus.NOT_FOUND);
   return next(err);
 });
 
 // error handler, send stacktrace only during development
 app.use((err: IAPIError, req: Request, res: Response, next: NextFunction) => {
   if (config.env === "development") {
-    winstonLogger.error(err.name, err);
+    winstonLogger.error(`${err.message}`, { error: err });
   }
   return res.status(err.status).json(responseError(err));
 });

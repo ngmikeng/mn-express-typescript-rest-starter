@@ -45,7 +45,8 @@
     "method-override": "^2.3.10",
     "mongoose": "^5.1.5",
     "morgan": "^1.9.0",
-    "winston": "^3.0.0"
+    "serialize-error": "^4.1.0",
+    "winston": "^3.2.1"
   },
   "devDependencies": {
     "@types/bluebird": "^3.5.20",
@@ -68,7 +69,6 @@
     "@types/node": "^10.3.3",
     "@types/supertest": "^2.0.4",
     "@types/swagger-jsdoc": "0.0.2",
-    "@types/winston": "^2.3.9",
     "chai": "^4.1.2",
     "concurrently": "^3.6.0",
     "mocha": "^5.2.0",
@@ -78,6 +78,6 @@
     "swagger-ui-express": "^3.0.10",
     "ts-node": "^7.0.0",
     "tslint": "^5.10.0",
-    "typescript": "^2.9.2"
+    "typescript": "^3.2.2"
   }
 }

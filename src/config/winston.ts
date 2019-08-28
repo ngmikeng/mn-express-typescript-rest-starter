@@ -1,4 +1,5 @@
 import { createLogger, format, transports } from "winston";
+import serializeError from "serialize-error";
 const { combine, timestamp, label, simple } = format;
 
 const logger = createLogger({
@@ -6,10 +7,19 @@ const logger = createLogger({
   format: combine(
     label({ label: "App" }),
     timestamp({
-      format: "YYYY-MM-DD HH:mm:ss"
+      format: "YYYY-MM-DD HH:mm:ss.SSS"
     }),
     simple(),
-    format.printf(info => `${info.timestamp} ${info.level}: ${info.message} ${info.level === "error" ? JSON.stringify(info.error) : ""}`)
+    format.printf(info => {
+      const logInfo = `${info.timestamp} ${info.level}: ${info.message}`;
+      if (info.level === "error") {
+        const serializedErr: Error = serializeError(info.error);
+        const infoError = JSON.stringify(info.error);
+        const errorStack = `${serializedErr.stack}`;
+        return `${logInfo} ${infoError}\n${errorStack}`;
+      }
+      return logInfo;
+    })
   ),
   transports: [
     //
