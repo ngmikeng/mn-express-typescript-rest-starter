@@ -1,5 +1,5 @@
 import { Router } from "express";
-import Joi from "joi";
+import Joi from "@hapi/joi";
 import * as userCtrl from "../controllers/user.controller";
 import userValidation from "../validation/user.validation";
 const validate = require("express-validation");

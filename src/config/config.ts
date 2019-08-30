@@ -1,5 +1,5 @@
 import dotenv from "dotenv";
-import Joi from "joi";
+import Joi from "@hapi/joi";
 
 dotenv.config();
 // env config schema
