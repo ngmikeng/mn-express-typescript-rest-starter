@@ -2,7 +2,8 @@ import { Router } from "express";
 import Joi from "@hapi/joi";
 import * as userCtrl from "../controllers/user.controller";
 import userValidation from "../validation/user.validation";
-const validate = require("express-validation");
+import { createValidator } from "express-joi-validation";
+const validator = createValidator();
 
 const router = Router();
 
@@ -51,7 +52,7 @@ router.route("/")
   /** GET /api/v1/users - Get list of users */
   .get(userCtrl.list)
   /** POST /api/users - Create new user */
-  .post(validate(userValidation.createUser), userCtrl.create);
+  .post(validator.body(userValidation.createUser.body), userCtrl.create);
 
 /**
  * @swagger
@@ -76,7 +77,7 @@ router.route("/")
  */
 router.route("/:userId")
   /** GET /api/v1/users/:userId - Get user */
-  .get(validate(userValidation.getById), userCtrl.get);
+  .get(validator.params(userValidation.getById.params), userCtrl.get);
 
 /**
  * @swagger
@@ -112,15 +113,19 @@ router.route("/:userId")
  */
 router.route("/db")
   /** POST /api/users/db - Create new user and save in a database has name equal req.query.db */
-  .post(validate(userValidation.createUserByDb), userCtrl.createByDb);
+  .post(validator.body(userValidation.createUserByDb.body), userCtrl.createByDb);
 
 /** Load user when API with userId route parameter is hit */
 router.param("userId", (req, res, next, id) => {
-  const result = Joi.validate(id, userValidation.getById.params.userId);
-  if (result.error) {
-    return next(result.error);
+  try {
+    const result = Joi.validate(id, userValidation.userId);
+    if (result.error) {
+      return next(result.error);
+    }
+    return userCtrl.load(req, res, next, id);
+  } catch (err) {
+    next(err);
   }
-  return userCtrl.load(req, res, next, id);
 });
 
 export default router;

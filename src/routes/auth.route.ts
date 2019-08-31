@@ -3,8 +3,8 @@ import expressJwt from "express-jwt";
 import config from "../config/config";
 import { login, randomNumber } from "../controllers/auth.controller";
 import authValidation from "../validation/auth.validation";
-const validate = require("express-validation");
-
+import { createValidator } from "express-joi-validation";
+const validator = createValidator();
 const router = Router();
 
 /**
@@ -39,7 +39,7 @@ const router = Router();
  *      401:
  *        description: 'Unauthorized'
  */
-router.post("/login", validate(authValidation.login), login);
+router.post("/login", validator.body(authValidation.login.body), login);
 
 /**
  * GET /api/v1/auth/random-number
